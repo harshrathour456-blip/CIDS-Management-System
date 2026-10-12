@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Add Student</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="navbar">Add Student</div>
+    <div class="container">
+        <form id="f">
+            <input name="studentId" placeholder="Student ID">
+            required
+            <input name="name" placeholder="Student Name" required>
+            <input name="fatherName" placeholder="Father Name">
+            <input name="phone" placeholder="Phone">
+            <input name="email" type="email" placeholder="Email">
+            <textarea name="address" placeholder="Address">
+</textarea>
+            <input name="course" placeholder="Course">
+            <input name="batch" placeholder="Batch">
+            <input name="totalFees" type="number" placeholder="Total Fees">
+            <input name="feesPaid" type="number" placeholder="Fees Paid">
+            <button>Save Student</button>
+        </form>
+    </div>
+    <script>
+        f.addEventListener("submit", async e => {
+            e.preventDefault();
+            const data =
+                Object.fromEntries(new FormData(f));
+            data.totalFees =
+                Number(data.totalFees || 0);
+            data.feesPaid =
+                Number(data.feesPaid || 0);
+            const r = await fetch(
+                "/api/students",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                }
+            );
+            if (r.ok) {
+                alert("Student added");
+                location = "/students.html";
+            } else {
+                alert(await r.text());
+            }
+        });
+    </script>
+</body>
+
+</html>

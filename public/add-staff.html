@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Add Staff</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="navbar">Add Staff</div>
+    <div class="container">
+        <form id="f">
+            <input name="staffId" placeholder="Staff ID" required>
+            <input name="name" placeholder="Name" required>
+            <input name="phone" placeholder="Phone">
+            <input name="email" type="email" placeholder="Email">
+            <input name="designation" placeholder="Designation">
+            <input name="salary" type="number" placeholder="Salary">
+            <button>Save Staff</button>
+        </form>
+    </div>
+    <script>
+        f.addEventListener("submit", async e => {
+            e.preventDefault();
+            const d =
+                Object.fromEntries(new FormData(f));
+            d.salary =
+                Number(d.salary || 0);
+            const r = await fetch(
+                "/api/staff",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(d)
+                }
+            );
+            if (r.ok) {
+                alert("Staff added");
+                location = "/staff.html";
+            } else {
+                alert(await r.text());
+            }
+        });
+    </script>
+</body>
+
+</html>

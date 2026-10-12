@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Add Course</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="navbar">Add Course</div>
+    <div class="container">
+        <form id="f">
+            <input name="name" placeholder="Course Name" required>
+            <input name="duration" placeholder="Duration">
+            <input name="fees" type="number" placeholder="Fees">
+            <textarea name="description" placeholder="Description">
+</textarea>
+            <button>Save Course</button>
+        </form>
+    </div>
+    <script>
+        f.addEventListener("submit", async e => {
+            e.preventDefault();
+            const d =
+                Object.fromEntries(new FormData(f));
+            d.fees = Number(d.fees || 0);
+            const r = await fetch(
+                "/api/courses",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(d)
+                }
+            );
+            if (r.ok) {
+                alert("Course added");
+                location = "/courses.html";
+            } else {
+                alert(await r.text());
+            }
+        });
+    </script>
+</body>
+
+</html>

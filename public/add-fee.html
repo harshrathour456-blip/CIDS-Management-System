@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Add Fee</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="navbar">Add Fee</div>
+  <div class="container">
+
+    <form id="f">
+      <input name="studentId" placeholder="Student ID" required>
+      <input name="studentName" placeholder="Student Name">
+      <input name="amount" type="number" placeholder="Amount" required>
+      <select name="paymentMethod">
+        <option>Cash</option>
+        <option>UPI</option>
+        <option>Bank Transfer</option>
+        <option>Card</option>
+      </select>
+      <input name="receiptNo" placeholder="Receipt Number">
+      <button>Save Payment</button>
+    </form>
+  </div>
+  <script>
+    f.addEventListener("submit", async e => {
+      e.preventDefault();
+      const d =
+        Object.fromEntries(new FormData(f));
+      d.amount = Number(d.amount);
+      const r = await fetch(
+        "/api/fees",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(d)
+        }
+      );
+      if (r.ok) {
+        alert("Payment saved");
+        location = "/fees.html";
+      } else {
+        alert(await r.text());
+      }
+    });
+  </script>
+</body>
+
+</html>

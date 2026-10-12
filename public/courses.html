@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Courses</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="navbar">Courses</div>
+  <div class="container">
+    <div id="list"></div>
+  </div>
+  <script>
+    fetch("/api/courses")
+      .then(r => r.json())
+      .then(a => {
+        a.forEach(x => {
+          list.innerHTML += `
+        <div class="card">
+          <h2>${x.name}</h2>
+          <p>
+            Duration: ${x.duration || ""}
+          </p>
+          <p>
+            Fees: 
+n${x.fees || 0}
+          </p>
+          <p>
+            ${x.description || ""}
+          </p>
+        </div>
+      `;
+        });
+      });
+  </script>
+</body>
+
+</html>

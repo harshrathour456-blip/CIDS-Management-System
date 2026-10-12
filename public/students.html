@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Students</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="navbar">Students</div>
+    <div class="container">
+        <input id="search" placeholder="Search student...">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Course</th>
+                    <th>Total</th>
+                    <th>Paid</th>
+                    <th>Pending</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="body"></tbody>
+        </table>
+    </div>
+    <script>
+        let all = [];
+        async function load() {
+            all =
+                await (await fetch(
+                    "/api/students"
+                )).json();
+            render(all);
+        }
+        function render(a) {
+            body.innerHTML = "";
+            a.forEach(x => {
+                const pending =
+                    Number(x.totalFees || 0)
+                Number(x.feesPaid || 0);
+                body.innerHTML += `
+      <tr>
+        <td>${x.studentId}</td>
+        <td>${x.name}</td>
+        <td>${x.phone || ""}</td>
+        <td>${x.course || ""}</td>
+        <td>n${x.totalFees || 0}</td>
+        <td>n${x.feesPaid || 0}</td>
+        <td>n${pending}</td>
+        <td>
+          <button onclick="del('${x._id}')">
+            Delete
+          </button>
+        </td>
+      </tr>
+    `;
+            });
+        }
+        async function del(id) {
+            if (!confirm("Delete?")) return;
+            const r = await fetch(
+                "/api/students/" + id,
+                { method: "DELETE" }
+            );
+            if (r.ok) load();
+        }
+        search.oninput = e => {
+            const q =
+                e.target.value.toLowerCase();
+            render(
+                all.filter(x =>
+                    (x.name || "")
+                        .toLowerCase()
+                        .includes(q)
+                    ||
+                    (x.phone || "").includes(q)
+                    ||
+                    (x.studentId || "")
+                        .toLowerCase()
+                        .includes(q)
+                )
+            );
+        };
+        load();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Attendance</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<style>
+    .pgreen{
+        color:green;
+    }
+    .ared{
+        color:red;
+    }
+    select:has(.pgreen:checked){
+        color:green;
+    }
+    select:has(.ared:checked){
+        color:red;
+    }
+
+</style>
+
+<body>
+    <div class="navbar">Attendance</div>
+    <div class="container">
+        <form id="f">
+            <input name="studentId" placeholder="Student ID" required>
+            <input name="studentName" placeholder="Student Name">
+            <select name="status">
+                <option class="pgreen">Present</option>
+                <option class="ared">Absent</option>
+            </select>
+            <button>Save Attendance</button>
+        </form>
+        <h2>History</h2>
+        <div id="history"></div>
+    </div>
+    <script>
+        f.addEventListener("submit", async e => {
+            e.preventDefault();
+            const d =
+                Object.fromEntries(new FormData(f));
+            const r = await fetch(
+                "/api/attendance",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(d)
+                }
+            );
+            if (r.ok) {
+                alert("Attendance saved");
+                f.reset();
+                load();
+            } else {
+                alert(await r.text());
+            }
+        });
+        function load() {
+            fetch("/api/attendance")
+                .then(r => r.json())
+                .then(a => {
+                    history.innerHTML = "";
+                    a.forEach(x => {
+                        history.innerHTML += `
+          <div class="card">
+            ${x.studentId}
+            
+            ${x.studentName || ""}
+            |
+            ${x.status}
+            |
+            ${new Date(
+                            x.date
+                        ).toLocaleDateString()}
+          </div>
+        `;
+                    });
+                });
+        }
+        load();
+    </script>
+</body>
+
+</html>

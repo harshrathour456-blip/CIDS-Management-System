@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>CIDS Register</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<style>
+    a{
+        color: blue;
+        text-decoration: none;
+        font-size: 20px;
+        font-weight: bold;
+    }
+    a:hover{
+        scale: 1.1;
+        color: red;
+    }
+</style>
+
+<body>
+    <div class="navbar">CIDS Management System</div>
+    <div class="container">
+        <h2>Create User</h2>
+        <form id="f">
+            <input name="name" placeholder="Name" required>
+            <input name="email" type="email" placeholder="Email" required>
+            <input name="password" type="password" placeholder="Password" required>
+            <select name="role">
+                <option>admin</option>
+                <option>teacher</option>
+                <option>staff</option>
+            </select>
+            <button>Register</button>
+        </form>
+        <p>
+            <a href="/login.html">Login ▲</a>
+        </p>
+    </div>
+    <script>
+        f.addEventListener("submit", async e => {
+            e.preventDefault();
+            const data =
+                Object.fromEntries(new FormData(f));
+            const r = await fetch(
+                "/api/users/register",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                }
+            );
+            alert(await r.text());
+            if (r.ok) {
+                location = "/login.html";
+            }
+        });
+    </script>
+</body>
+
+</html>

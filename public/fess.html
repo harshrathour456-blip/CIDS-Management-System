@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Fees</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="navbar">Fees</div>
+    <div class="container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Student ID</th>
+                    <th>Name</th>
+                    <th>Amount</th>
+                    <th>Method</th>
+                    <th>Receipt</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody id="body"></tbody>
+        </table>
+    </div>
+    <script>
+        fetch("/api/fees")
+            .then(r => r.json())
+            .then(a => {
+                a.forEach(x => {
+                    body.innerHTML += `
+        <tr>
+          <td>${x.studentId}</td>
+          <td>${x.studentName || ""}</td>
+          <td>n${x.amount}</td>
+          <td>${x.paymentMethod}</td>
+          <td>${x.receiptNo || ""}</td>
+          <td>
+            ${new Date(
+                        x.paymentDate
+                    ).toLocaleDateString()}
+          </td>
+        </tr>
+      `;
+                });
+            });
+    </script>
+</body>
+
+</html>

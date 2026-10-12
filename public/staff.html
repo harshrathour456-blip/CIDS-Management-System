@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Staff</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="navbar">Staff</div>
+    <div class="container">
+        <div id="list"></div>
+    </div>
+    <script>
+        fetch("/api/staff")
+            .then(r => r.json())
+            .then(a => {
+                a.forEach(x => {
+                    list.innerHTML += `
+        <div class="card">
+          <h2>${x.name}</h2>
+          <p>ID: ${x.staffId}</p>
+          <p>Phone: ${x.phone || ""}</p>
+          <p>Email: ${x.email || ""}</p>
+          <p>
+            Designation:
+            ${x.designation || ""}
+          </p>
+          <p>
+            Salary:
+n${x.salary || 0}
+          </p>
+        </div>
+      `;
+                });
+            });
+    </script>
+</body>
+
+</html>

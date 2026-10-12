@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>CIDS Login</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="navbar">CIDS Login</div>
+    <div class="container">
+        <form id="f">
+            <input name="email" type="email" placeholder="Email" required>
+            <input name="password" type="password" placeholder="Password" required>
+            <button>Login</button>
+        </form>
+    </div>
+    <script>
+        f.addEventListener("submit", async e => {
+            e.preventDefault();
+            const data =
+                Object.fromEntries(new FormData(f));
+            const r = await fetch(
+                "/api/users/login",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                }
+            );
+            const x =
+                await r.json().catch(() => null);
+            if (!r.ok) {
+                alert(x || "Login failed");
+                return;
+            }
+            localStorage.setItem(
+                "user",
+                JSON.stringify(x.user)
+            );
+            location = "/dashboard.html";
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>CIDS Dashboard</title>
+
+</head>
+<style>
+    body,html {
+        height: 100%;
+        padding: 0;
+        margin: 0;
+    }
+
+    .navbar {
+        background-color: #0f2747;
+        color: white;
+        font-size: 25x;
+        padding: 10px 15px;
+    }
+
+    .container {
+        display: flex;
+        min-height: 100vh;
+    }
+
+    .sidebar {
+        background-color: black;
+        width: 220px;
+    }
+    .sidebar ul{
+        margin:0px;
+        padding-left:15px;
+        padding-right:50px;
+        margin-top:20px;
+    } 
+    .card-grid {
+        display: grid;
+        grid-template-columns:
+            repeat(auto-fit, minmax(180px, 1fr));
+        gap: 15px;
+    }
+
+    .card {
+        background: white;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 0 15px black;
+        margin-bottom: 12px;
+    }
+    .card h3,h2{
+        font-size: 25px;
+    }
+    .btn {
+    display:block;
+    margin-bottom: 25px;
+    padding: 10px 16px;
+    border: 0;
+    border-radius: 6px;
+    cursor: pointer;
+    background: #0f2747;
+    color: white;
+    text-decoration: none;
+    }
+    .btn:hover{
+        scale: 1.1;
+        box-shadow: 0 0 10px rgba(255, 255, 255, .5);
+    }
+.main{
+    background-color: beige;
+    flex: 1;
+}
+@media(max-width:600px) {
+    .container {
+        width: 95%;
+    }
+
+    table {
+        font-size: 12px;
+    }
+}
+
+</style>
+
+<body>
+    <div class="navbar">
+        <b>CIDS Management System</b>
+    </div>
+    <div class="container">
+        <nav class="sidebar">
+            <ul>
+               <li><a class="btn" href="/add-student.html">
+                    Add Student
+                </a></li>
+                <li><a class="btn" href="/students.html">
+                    Students
+                </a></li>
+                <li><a class="btn" href="/add-course.html">
+                    Add Course
+                </a></li>
+                <li><a class="btn" href="/courses.html">
+                    Courses
+                </a></li>
+                <li><a class="btn" href="/add-fee.html">
+                    Add Fee
+                </a></li>
+                <li><a class="btn" href="/fees.html">
+                    Fees
+                </a></li>
+                <li><a class="btn" href="attendance.html">
+                    Attendance
+                </a></li>
+                <li><a class="btn" href="/add-staff.html">
+                    Add Staff
+                </a></li>
+                <li><a class="btn" href="/staff.html">
+                    Staff
+                </a></li>
+            </ul>
+        </nav>
+
+        <main class="main">
+            <h1>Dashboard</h1>
+            <div class="card-grid">
+                <div class="card">
+                    <h3>Students</h3>
+                    <h2 id="s">0</h2>
+                </div>
+                <div class="card">
+                    <h3>Courses</h3>
+                    <h2 id="c">0</h2>
+                </div>
+                <div class="card">
+                    <h3>Staff</h3>
+                    <h2 id="st">0</h2>
+                </div>
+                <div class="card">
+                    <h3>Collected</h3>
+                    <h2 id="col">0</h2>
+                </div>
+                <div class="card">
+                    <h3>Pending</h3>
+                    <h2 id="pen">0</h2>
+                </div>
+        </main>
+    </div>
+     <script>
+        if (!localStorage.getItem("user")) {
+            location = "/login.html";
+        }
+        fetch("/api/dashboard")
+            .then(r => r.json())
+            .then(x => {
+                s.textContent = x.students;
+                c.textContent = x.courses;
+                st.textContent = x.staff;
+                col.textContent =
+                    "n" + x.totalCollected;
+                pen.textContent =
+                    "n" + x.totalPending;
+            });
+    </script>
+</body>
+
+</html>
