@@ -11,7 +11,7 @@ app.get("/dashboard", (req, res) => {
 app.get("/fees.html", (req, res) => {
     res.sendFile(path.join(__dirname, "public", "fess.html"));
 });
-mongoose.connect("mongodb://127.0.0.1:27017/cidsManagementDB")
+mongoose.connect("mongodb+srv://managesys:managesys@cluster0.sj370we.mongodb.net/?appName=Cluster0"/User)
     .then(() => console.log("MongoDB Connected Successfully"))
     .catch(err => console.log("MongoDB Error:", err));
 app.use("/api/users", require("./routes/userRoutes"));
